@@ -14,14 +14,7 @@ fn instrument_bench(c: &mut Criterion) {
         // when they have no extra data attached
         .filter_module("tracing::span", log::LevelFilter::Error)
         .init();
-    // filtered out log message via log:env_logger
-    // filtered out log message via tracing:env_logger
-    // filtered out tracing span via env_logger
-    // filtered out tracing span with log data via env_logger
-    // module filtered out log message via log:env_logger
-    // module filtered out log message via tracing:env_logger
-    // module filtered out tracing span via env_logger
-    // module filtered out tracing span with log data via env_logger
+
     filter_bench(&mut group);
     group.finish();
 }

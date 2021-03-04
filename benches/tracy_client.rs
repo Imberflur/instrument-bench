@@ -1,10 +1,10 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 
 fn instrument_bench(c: &mut Criterion) {
-    let mut group = c.benchmark_group("tracy_client");
+    let mut group = c.benchmark_group("tracy-client");
     // tracy-client span
     group.measurement_time(core::time::Duration::from_millis(200));
-    group.bench_function("tracy client span", |b| b.iter(tracy_client_span));
+    group.bench_function("tracy-client span", |b| b.iter(tracy_client_span));
     group.finish();
 }
 

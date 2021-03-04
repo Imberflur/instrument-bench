@@ -6,15 +6,8 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]
-test_output = []
-test_env_logger = ["test_output"] 
-#["env_logger", "test_output"]
-test_tracing_subscriber = ["test_output"] 
-# ["fmt_subscriber", "test_output"]
-fmt_subscriber = [] #["tracing-subscriber"]
-tracing_tracy = [] #["tracing-tracy", "tracing-subscriber"]
-tracy_client = [] #["tracy-client"]
-env_logger_ = []
+test_env_logger = [] 
+test_tracing_subscriber = [] 
 
 [dependencies.tracing]
 version = "0.1.25"
@@ -22,7 +15,6 @@ features = ["log"]
 
 [dependencies.tracing-subscriber]
 version = "0.2.16"
-#optional = true
 features = ["fmt"]
 
 [dependencies.log]
@@ -30,15 +22,12 @@ version = "0.4.14"
 
 [dependencies.env_logger]
 version = "0.8.3"
-#optional = true
 
 [dependencies.tracing-tracy]
 version = "0.6.0"
-#optional = true
 
 [dependencies.tracy-client]
 version = "0.12.0"
-#optional = true
 
 [dev-dependencies]
 criterion = "0.3.4"
@@ -47,5 +36,17 @@ criterion = "0.3.4"
 bench = false
 
 [[bench]]
-name = "bench"
+name = "env_logger"
+harness = false
+
+[[bench]]
+name = "tracing_subscriber"
+harness = false
+
+[[bench]]
+name = "tracing_tracy"
+harness = false
+
+[[bench]]
+name = "tracy_client"
 harness = false

@@ -1,37 +1,7 @@
-fn main() {
-    #[cfg(feature = "test_output")]
-    test_output();
-    #[cfg(not(feature = "test_output"))]
-    run_benches();
-}
-
-#[cfg(not(feature = "test_output"))]
-fn run_benches() {
-    use std::process::Command;
-    let bench_feature = |feature| {
-        println!("Starting benchmark for {}", feature);
-        Command::new("cargo")
-            .args(&[
-                "bench",
-                "--features",
-                feature,
-                //"--target-dir",
-                //&[feature, "_tgt"].concat(),
-            ])
-            .spawn()
-            .unwrap()
-            .wait()
-            .unwrap();
-    };
-
-    bench_feature("env_logger_");
-    bench_feature("fmt_subscriber");
-    bench_feature("tracing_tracy");
-    bench_feature("tracy_client");
-}
+fn main() {}
 
 #[cfg(feature = "test_env_logger")]
-fn test_output() {
+fn main() {
     env_logger::Builder::new()
         .filter(None, log::LevelFilter::Info)
         .filter_module("instrument_bench::foo", log::LevelFilter::Error)
@@ -44,7 +14,7 @@ fn test_output() {
 }
 
 #[cfg(feature = "test_tracing_subscriber")]
-fn test_output() {
+fn main() {
     use tracing_subscriber::filter::{EnvFilter, LevelFilter};
     use tracing_subscriber::fmt;
     use tracing_subscriber::prelude::*;
@@ -62,7 +32,7 @@ fn test_output() {
     test_output_inner();
 }
 
-#[cfg(feature = "test_output")]
+#[allow(dead_code)]
 fn test_output_inner() {
     instrument_bench::log_message();
     instrument_bench::tracing_message();

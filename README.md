@@ -8,6 +8,7 @@ logging and instrumentation crates. These include:
 #### Frontends
 * [`env_logger`][env_logger]
 * [`tracing-subscriber`][tracing-subscriber] (with the [`fmt`][fmt] subscriber layer)
+* [`tracing-tracy`][tracing-tracy] (this is used in combination with `tracing-subscriber` just replacing the `fmt` layer in these tests)
 
 #### Direct instrumentation
 * [`tracy-client`][tracy-client]
@@ -17,6 +18,7 @@ logging and instrumentation crates. These include:
 [env_logger]: https://crates.io/crates/env_logger
 [tracing-subscriber]: https://crates.io/crates/tracing-subscriber
 [tracy-client]: https://crates.io/crates/tracing-subscriber
+[tracing-tracy]: https://crates.io/crates/tracing-tracy
 [fmt]: https://docs.rs/tracing-subscriber/0.2.16/tracing_subscriber/fmt/index.html
 
 The backends/frontends listed here are benchmarked in all possible combinations since they are all compatible.
@@ -27,7 +29,7 @@ cargo bench
 
 
 # Benchmark results
-Note: I did not obtain these in a controlled environment and they can vary wildy
+Note: I did not obtain these in a controlled environment and they can vary wildly
 (-50/+100 percent). However, the general relationships that are more than a factor
 of 2 apart should hold.
 
@@ -46,11 +48,16 @@ of 2 apart should hold.
 |`tracing::info_span!("")`               |76.9 ns      |19.4 ns             |13.9 ns           |
 |`tracing::info_span!("", "extra info")` |86.32 ns     |19.7 ns             |14.5 ns           |
 
-**\***For the `info_span!("")` "tracing::span=error" is needed to suppres it rather than using the module path because tracing spans report this as their module name to `log` frontends for spans that have no extra fields attached.
+*For the `info_span!("")` "tracing::span=error" is needed to suppres it rather than using the module path because tracing spans report this as their module name to `log` frontends for spans that have no extra fields attached.
 
 ### Benchmarks with an active span.
-| crate            |  time (ns) |
-|:-----------------|:-----------|
-|`tracy-subscriber`| 600        |
-|`tracy-tracing`   | 1062       |
-|`tracy-client`    | 205        |
+`tracing-subscriber` is using the `fmt` subscriber layer with a `tracing` span
+
+`tracy-tracing` allows timing `tracing` spans with the Tracy profiler
+
+`tracy-client` directly interfaces with the Tracy profiler
+| crate              |  time (ns) |
+|:-------------------|:-----------|
+|`tracing-subscriber`|600         |
+|`tracy-tracing`     |1062        |
+|`tracy-client`      |205         |
